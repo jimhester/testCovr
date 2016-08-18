@@ -1,0 +1,23 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+```{r}
+library(covr)
+package_coverage()
+
+file.rename("R/addition.R", "R/addition.R.bak")
+package_coverage()
+
+file.rename("R/addition.R.bak", "R/addition.R")
+```
