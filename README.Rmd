@@ -25,37 +25,25 @@ file.rename("R/addition.R.bak", "R/addition.R")
 ```{r}
 library(knitr)
 library(webshot)
-source_file <- tempfile()
-test_file <- tempfile()
-
-cat(file = source_file,
-'
-curry2 <- function(x)
+cov <- code_coverage(
+'curry2 <- function(x)
 {
   if(is.data.frame(x))
     return(1)
   else
     # test
     return(0)
-}
-')
-
-cat(file = test_file,
+}',
 'curry2("a")')
 
-cov <- file_coverage(source_file, test_file)
 webshot(report(cov, browse = FALSE), selector = c("#files"), eval = "casper.then(function() { this.click('td a')});")
+percent_coverage(cov)
 as.data.frame(cov)
-file.remove(source_file, test_file)
 ```
 
 ```{r}
-source_file <- tempfile()
-test_file <- tempfile()
-
-cat(file = source_file,
-'
-curry <- function(x)
+cov <- code_coverage(
+'curry <- function(x)
 {
   if(is.data.frame(x)){
     # test0
@@ -72,14 +60,10 @@ curry <- function(x)
     return(3)
 
   }
-}
-')
-
-cat(file = test_file,
+}',
 'curry("a")')
 
-cov <- file_coverage(source_file, test_file)
 webshot(report(cov, browse = FALSE), selector = c("#files"), eval = "casper.then(function() { this.click('td a')});")
+percent_coverage(cov)
 as.data.frame(cov)
-file.remove(source_file, test_file)
 ```

@@ -20,55 +20,43 @@ file.rename("R/addition.R.bak", "R/addition.R")
 ``` r
 library(knitr)
 library(webshot)
-source_file <- tempfile()
-test_file <- tempfile()
-
-cat(file = source_file,
-'
-curry2 <- function(x)
+cov <- code_coverage(
+'curry2 <- function(x)
 {
   if(is.data.frame(x))
     return(1)
   else
     # test
     return(0)
-}
-')
-
-cat(file = test_file,
+}',
 'curry2("a")')
 
-cov <- file_coverage(source_file, test_file)
 webshot(report(cov, browse = FALSE), selector = c("#files"), eval = "casper.then(function() { this.click('td a')});")
 ```
 
 ![](README-unnamed-chunk-3-1.png)
 
 ``` r
+percent_coverage(cov)
+#> [1] 66.66667
 as.data.frame(cov)
-#>                                                                        filename
-#> 1 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/file899c5ed3da27
-#> 2 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/file899c5ed3da27
-#> 3 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/file899c5ed3da27
+#>                                                                            filename
+#> 1 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/source.R899c17098495
+#> 2 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/source.R899c17098495
+#> 3 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/source.R899c17098495
 #>   functions first_line first_byte last_line last_byte first_column
-#> 1    curry2          4          6         4        21            6
-#> 2    curry2          5          5         5        13            5
-#> 3    curry2          8          5         8        13            5
+#> 1    curry2          3          6         3        21            6
+#> 2    curry2          4          5         4        13            5
+#> 3    curry2          7          5         7        13            5
 #>   last_column first_parsed last_parsed value
-#> 1          21            4           4     1
-#> 2          13            5           5     0
-#> 3          13            8           8     1
-file.remove(source_file, test_file)
-#> [1] TRUE TRUE
+#> 1          21            3           3     1
+#> 2          13            4           4     0
+#> 3          13            7           7     1
 ```
 
 ``` r
-source_file <- tempfile()
-test_file <- tempfile()
-
-cat(file = source_file,
-'
-curry <- function(x)
+cov <- code_coverage(
+'curry <- function(x)
 {
   if(is.data.frame(x)){
     # test0
@@ -85,44 +73,40 @@ curry <- function(x)
     return(3)
 
   }
-}
-')
-
-cat(file = test_file,
+}',
 'curry("a")')
 
-cov <- file_coverage(source_file, test_file)
 webshot(report(cov, browse = FALSE), selector = c("#files"), eval = "casper.then(function() { this.click('td a')});")
 ```
 
 ![](README-unnamed-chunk-4-1.png)
 
 ``` r
+percent_coverage(cov)
+#> [1] 42.85714
 as.data.frame(cov)
-#>                                                                        filename
-#> 1 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/file899c72088620
-#> 2 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/file899c72088620
-#> 3 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/file899c72088620
-#> 4 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/file899c72088620
-#> 5 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/file899c72088620
-#> 6 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/file899c72088620
-#> 7 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/file899c72088620
+#>                                                                            filename
+#> 1 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/source.R899c4702e652
+#> 2 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/source.R899c4702e652
+#> 3 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/source.R899c4702e652
+#> 4 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/source.R899c4702e652
+#> 5 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/source.R899c4702e652
+#> 6 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/source.R899c4702e652
+#> 7 /var/folders/dt/r5s12t392tb5sk181j3gs4zw0000gn/T//RtmpyXdgHV/source.R899c4702e652
 #>   functions first_line first_byte last_line last_byte first_column
-#> 1     curry          4          6         4        21            6
-#> 2     curry          6          5         6        13            5
-#> 3     curry          7         15         7        29           15
-#> 4     curry          9          5         9        13            5
-#> 5     curry         11         14        11        26           14
-#> 6     curry         13          5        13        13            5
-#> 7     curry         16          5        16        13            5
+#> 1     curry          3          6         3        21            6
+#> 2     curry          5          5         5        13            5
+#> 3     curry          6         15         6        29           15
+#> 4     curry          8          5         8        13            5
+#> 5     curry         10         14        10        26           14
+#> 6     curry         12          5        12        13            5
+#> 7     curry         15          5        15        13            5
 #>   last_column first_parsed last_parsed value
-#> 1          21            4           4     1
-#> 2          13            6           6     0
-#> 3          29            7           7     1
-#> 4          13            9           9     1
-#> 5          26           11          11     0
-#> 6          13           13          13     0
-#> 7          13           16          16     0
-file.remove(source_file, test_file)
-#> [1] TRUE TRUE
+#> 1          21            3           3     1
+#> 2          13            5           5     0
+#> 3          29            6           6     1
+#> 4          13            8           8     1
+#> 5          26           10          10     0
+#> 6          13           12          12     0
+#> 7          13           15          15     0
 ```
