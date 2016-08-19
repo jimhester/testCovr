@@ -23,12 +23,14 @@ file.rename("R/addition.R.bak", "R/addition.R")
 ```
 
 ```{r}
+library(knitr)
+library(webshot)
 source_file <- tempfile()
 test_file <- tempfile()
 
 cat(file = source_file,
 '
-curry <- function(x)
+curry2 <- function(x)
 {
   if(is.data.frame(x))
     return(1)
@@ -39,15 +41,13 @@ curry <- function(x)
 ')
 
 cat(file = test_file,
-'curry("a")')
+'curry2("a")')
 
 cov <- file_coverage(source_file, test_file)
-# report(cov)
+webshot(report(cov, browse = FALSE), selector = c("#files"), eval = "casper.then(function() { this.click('td a')});")
 as.data.frame(cov)
 file.remove(source_file, test_file)
 ```
-![](https://www.dropbox.com/s/bnwp7tbv03fpc7a/Screenshot%202016-08-18%2018.14.02.png?raw=1)
-
 
 ```{r}
 source_file <- tempfile()
@@ -79,8 +79,7 @@ cat(file = test_file,
 'curry("a")')
 
 cov <- file_coverage(source_file, test_file)
-# report(cov)
+webshot(report(cov, browse = FALSE), selector = c("#files"), eval = "casper.then(function() { this.click('td a')});")
 as.data.frame(cov)
 file.remove(source_file, test_file)
 ```
-![](https://www.dropbox.com/s/cm97qorczh9zl48/Screenshot%202016-08-18%2018.14.13.png?raw=1)
